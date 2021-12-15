@@ -70,6 +70,13 @@ export default {
                                     blockHash: this.$route.query.blockHash
                                 }
                             })
+                        } else if (this.$route.query.param) {
+                            router.push({
+                                name: this.$route.query.path,
+                                query: {
+                                    param: this.$route.query.param
+                                }
+                            })
                         } else {
                             router.push({
                                 name: this.$route.query.path,
