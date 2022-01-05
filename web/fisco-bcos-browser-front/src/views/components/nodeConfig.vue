@@ -28,7 +28,7 @@
             <v-model v-if="modeldata.show" ref="addNode" :title="modeldata.title" :config-modal="modeldata.Dialog" @close="closeModel($event)" :data="modeldata.data"  @success="submitModel($event)" :type="modeldata.type"></v-model>
             <div class="search-table">
                 <el-table :data="configList" v-loading="loading"  element-loading-text="数据加载中..."
-                          element-loading-background="rgba(0, 0, 0, 0.8)">
+                          element-loading-background="rgba(0, 0, 0, 0.8)" >
                     <el-table-column prop="nodeId" label="节点Id" :show-overflow-tooltip="true" align="center"></el-table-column>
                     <el-table-column prop="ip" label="IP" align="center"></el-table-column>
                     <el-table-column prop="rpcPort" label="rpc接口" align="center"></el-table-column>
@@ -122,7 +122,7 @@
                     groupId: localStorage.getItem("groupId"),
                     pageNumber: 1,
                     pageSize: 100,
-                    
+
                 };
                 let query = {
                     type: 0,
@@ -200,7 +200,7 @@
                             message(constant.ERROR,'error');
                         }
                     })
-                } 
+                }
             }
         }
     }
@@ -211,6 +211,9 @@
         position: relative;
         display: inline-block;
         padding: 10px 0 0 30px;
+    }
+   ::v-deep .el-table__body{
+        width: 100% !important;
     }
 }
 </style>

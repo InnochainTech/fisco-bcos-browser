@@ -11,7 +11,7 @@
             </div>
             <div class="search-table">
                 <el-table :data="chainContractList"  v-loading="loading" element-loading-text="数据加载中..." element-loading-background="rgba(0, 0, 0, 0.8)">
-                  
+
                     <el-table-column prop="contractAddress" label="合约地址" min-width="100px" :show-overflow-tooltip="true" align="center"></el-table-column>
 
                     <el-table-column prop="transFrom" label="合约创建者" min-width="100px" :show-overflow-tooltip="true" align="center"></el-table-column>
@@ -21,16 +21,16 @@
                    <el-table-column prop="transHash" label="交易hash" min-width="100px" :show-overflow-tooltip="true" align="center"></el-table-column>
 
                    <el-table-column prop="blockTimeStr" label="合约创建时间" min-width="100px" :show-overflow-tooltip="true" align="center"></el-table-column>
-                 
+
                     <el-table-column prop="pkHash" label="操作" min-width="100px" :show-overflow-tooltip="true" align="center" :class-name="'table-link'">
                         <template slot-scope="scope">
                             <span @click="linkPage('contractTransactionList','param',scope.row.contractAddress)">交易列表查看</span>
                         </template>
                     </el-table-column>
-                    
+
                 </el-table>
                 <div class="search-pagation">
-                    <div style="line-height: 40px;">
+                    <div class="search-page">
                     <span>查询结果 : </span>
                     <span>共计{{pagination.total}}条数据</span>
                     </div>
@@ -48,7 +48,21 @@
         </div>
     </div>
 </template>
-<style>
+<style scoped>
+.search-page {
+    line-height: 30px;
+    padding: 10px;
+}
+
+@media screen and (max-width: 1150px) {
+    ::v-deep .el-pager li {
+        min-width: 20px;
+    }
+
+    ::v-deep .btn-prev {
+        min-width: 20px;
+    }
+}
 </style>
 <script type="es6">
     import nav from '@/components/content-nav'
@@ -105,9 +119,9 @@
             linkPage: function (name,label,data) {
                 let resData = {
                     pageSize: this.pageSize,
-                    pageNumber: this.pageNumber 
+                    pageNumber: this.pageNumber
                 };
-                resData[label] = data 
+                resData[label] = data
                 router.push({
                     name: name,
                     query: resData
@@ -115,7 +129,7 @@
             },
             search: function(){
                 this.pagination.currentPage = 1;
-                this.searchChainContractInfo(); 
+                this.searchChainContractInfo();
                 router.push({
                     // name: "block",
                     query: {

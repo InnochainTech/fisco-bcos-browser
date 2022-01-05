@@ -51,8 +51,7 @@
 import nav from '@/components/content-nav'
 import { userList, userDelete } from '@/api/api'
 import addUser from '@/components/addUser.vue'
-import url from '@/api/url'
-import { message } from '@/util/util'
+import { message,IsPC } from '@/util/util'
 import constant from '@/util/constant'
 import errorcode from "@/util/errorCode"
 import '@/assets/css/layout.css'
@@ -112,9 +111,10 @@ export default {
             ],
             currentPage: 1,
             pageSize: 10,
-            total: 0,   
+            total: 0,
             btnType: '',
-            userInfo: {}
+            userInfo: {},
+            mobileType: IsPC(),
         }
     },
     mounted() {
@@ -232,7 +232,13 @@ export default {
     .hashInput {
         position: relative;
         display: inline-block;
-        padding: 10px 0 0 30px;
+        padding: 10px 0 0 10px;
+    }
+    ::v-deep .el-input__inner{
+        width: 200px;
+    }
+    ::v-deep .el-table__body{
+        width: 100% !important;
     }
 }
 </style>

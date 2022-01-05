@@ -218,3 +218,16 @@ export function reviseParam(necessary, query) {
 }
 
 
+
+/***
+ * @description  判断是 pc 还是  mobile
+ */
+export const IsPC = () => {
+  let userAgentInfo = navigator.userAgent;
+  let Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");
+  let flag = "pc";
+  for (let v = 0; v < Agents.length; v++) {
+    if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = "mobile"; break; }
+  }
+  return flag;
+}

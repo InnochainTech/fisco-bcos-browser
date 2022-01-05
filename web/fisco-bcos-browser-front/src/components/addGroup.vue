@@ -3,7 +3,7 @@
         <el-dialog
             title="新增群组"
             :visible.sync="groupVisible"
-            width="500px"
+            :width="mobileType === 'pc'?'500px':'375px'"
             :before-close="handleClose">
             <div class="node-model-conetnt" style="padding-left: 0">
                 <el-form :model="groupForm" :rules="rules" ref="groupForm" label-width="100px" class="demo-ruleForm">
@@ -17,17 +17,17 @@
                 <div class="group-label">
                     <span class="group-label-title">描述：</span>
                     <el-input  type="textarea"  v-model="groupInfo" class="group-label-input" placeholder="请输入描述"></el-input>
-                </div> 
+                </div>
             </div>
             <div slot="footer" class="dialog-footer group-footer">
                 <el-button type="primary" @click="submit('groupForm')">确 定</el-button>
             </div>
-        </el-dialog> 
+        </el-dialog>
     </div>
 </template>
 <script>
 import {addGroup} from "@/api/api"
-import {message} from '@/util/util'
+import {message,IsPC} from '@/util/util'
 import constant from '@/util/constant'
 import errorcode from "@/util/errorCode"
 
@@ -49,10 +49,11 @@ export default {
                     {required: true, message: '请输入群组id', trigger: 'blur'},
                     {min: 1,max:16, message: '长度不能超过16位', trigger: 'blur'},
                     {pattern:/^[1-9]\d*$/,message: '格式不正确', trigger: 'blur'}
-                ] 
+                ]
             },
             groupInfo: "",
             groupVisible: this.show || false,
+            mobileType: IsPC(),
         }
     },
     methods: {

@@ -1,6 +1,6 @@
 <template>
-    <div class="search-main" style="color: #fff;height: auto;">
-        <div class="container" style="overflow: auto;background-color: #2a2c3b;">
+    <div class="search-main" >
+        <div class="container" :style="{'padding':mobileType==='pc'?'0':'5px'}">
             <h1 style="width:100%;text-align:center">FISCO-BCOS 2.0区块链浏览器帮助文档</h1>
             <h2>一、描述</h2>
             <h3>1.1、基本描述</h3>
@@ -85,6 +85,7 @@ import add_node from '@/../static/image/add_node.png'
 import contract from '@/../static/image/contract.png'
 import transaction from '@/../static/image/transaction.png'
 import receipt from '@/../static/image/receipt.png'
+import { IsPC } from '@/util/util'
 export default {
     name: 'help',
     data: function(){
@@ -97,12 +98,21 @@ export default {
             addNode: add_node,
             contract: contract,
             transaction: transaction,
-            receipt: receipt
+            receipt: receipt,
+            mobileType: IsPC(),
         }
     }
 }
 </script>
 <style scoped>
+.search-main{
+    color: #fff;height: auto;
+}
+.container{
+    width: auto;
+    overflow: auto;
+    background-color: #2a2c3b;
+}
 img{
     width: 100%;
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="content-nav">
+    <div class="content-nav" :style="{'padding': mobileType === 'pc'?'0':'10px'}">
         <div class="title">{{title}} {{content}}</div>
         <div class="content">
             <span v-if="chainShow&&projectShow" @click="linkPage('project')" class="table-link">首页</span>
@@ -11,7 +11,7 @@
 </template>
 <script>
     import '@/assets/css/public.css'
-    import {goPage} from '@/util/util'
+    import {IsPC} from '@/util/util'
     import router from '@/router'
 
     export default {
@@ -27,7 +27,8 @@
                 chainType: this.$route.query.chainType || "01",
                 chainShow: false,
                 projectShow: true,
-                pages: this.page
+                pages: this.page,
+                mobileType: IsPC(),
             }
         },
         mounted: function () {
@@ -43,7 +44,7 @@
           }
         },
         methods: {
-            linkPage: function (name) { 
+            linkPage: function (name) {
                router.push({
                    name: name,
                    query: this.pages
@@ -64,9 +65,9 @@
         }
     }
 </script>
-<style>
+
+<style scope>
     .content-nav{
-        width: 100%;
         height: 34px;
         overflow: hidden;
         color: #fff;

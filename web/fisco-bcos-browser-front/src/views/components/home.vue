@@ -1,33 +1,48 @@
 <template>
     <div class="home">
         <div class="container">
-            <div class="home-head">
-                <!--blockChain Statistics-->
-                <div class="home-head-data margin-right-10" v-loading="loading1" element-loading-text="数据加载中..." element-loading-background="rgba(0, 0, 0, 0.8)">
-                    <ul>
-                        <li v-for="item in totalStatisticsList" :class="item.class" @click="linkPage(item.route,chainType)" :key="item.label" class="lg-width">
-                            <span class="home-head-data-label">{{item.label}}</span>
-                            <span class="home-head-data-content"> {{item.value}}</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!--Chart statistics-->
-                <div class="home-head-chart home-head-data margin-left-10" ref="chart" v-loading="loading2" element-loading-text="数据加载中..." element-loading-background="rgba(0, 0, 0, 0.8)">
-                    <v-chart ref="linechart" :type="'line'" :id="'homeId'" :data="chartStatistics.date" :transactionDataArr="chartStatistics.dataArr" :size="chartStatistics.chartSize" :title="'home'"></v-chart>
-                </div>
-            </div>
+            <el-row :gutter="10">
+                <el-col :xs="24" :sm="24" :md="12" :lg="10" :xl="8">
+                    <!--blockChain Statistics-->
+                    <div class="home-head-data" v-loading="loading1" element-loading-text="数据加载中..."
+                         element-loading-background="rgba(0, 0, 0, 0.8)">
+                        <ul>
+                            <li v-for="item in totalStatisticsList" :class="item.class"
+                                @click="linkPage(item.route,chainType)"
+                                :key="item.label" class="lg-width">
+                                <span class="home-head-data-label">{{ item.label }}</span>
+                                <span class="home-head-data-content"> {{ item.value }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </el-col>
+                <el-col :xs="24" :sm="24" :md="12" :lg="14" :xl="16">
+                    <!--Chart statistics-->
+                    <div class="home-head-chart home-head-data " ref="chart" v-loading="loading2"
+                         element-loading-text="数据加载中..."
+                         element-loading-background="rgba(0, 0, 0, 0.8)">
+                        <v-chart ref="linechart" :type="'line'" :id="'homeId'" :data="chartStatistics.date"
+                                 :transactionDataArr="chartStatistics.dataArr" :size="chartStatistics.chartSize"
+                                 :title="'home'"></v-chart>
+                    </div>
+                </el-col>
+            </el-row>
             <!--Node statistics-->
-            <div class="home-center">
-                <el-table :data="TbNodesList" :header-cell-style="bgTable" :row-class-name="tableRowClassName" :cell-style="tableCellStyle" v-loading="loading3" element-loading-text="数据加载中..." element-loading-background="rgba(0, 0, 0, 0.8)">
+            <div class="home-center" >
+                <el-table :data="TbNodesList" :header-cell-style="bgTable" :row-class-name="tableRowClassName"
+                          :cell-style="tableCellStyle" v-loading="loading3" element-loading-text="数据加载中..."
+                          element-loading-background="rgba(0, 0, 0, 0.8)">
                     <el-table-column label="节点Id" :show-overflow-tooltip="true" prop="nodeId" align="center">
                         <template slot-scope="scope">
-                            <i class="wbs-icon-baocun copy-public-key" style="font-size: 15px;cursor:pointer" @click="copyPubilcKey(scope.row.nodeId)" title="复制"></i>
-                            <span>{{scope.row.nodeId}}</span>
+                            <i class="wbs-icon-baocun copy-public-key" style="font-size: 15px;cursor:pointer"
+                               @click="copyPubilcKey(scope.row.nodeId)" title="复制"></i>
+                            <span>{{ scope.row.nodeId }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="当前块高" :show-overflow-tooltip="true" prop="blockNumber" align="center"></el-table-column>
-                    <el-table-column label="pbftView" :show-overflow-tooltip="true" prop="pbftView" align="center"></el-table-column>
+                    <el-table-column label="当前块高" :show-overflow-tooltip="true" prop="blockNumber"
+                                     align="center"></el-table-column>
+                    <el-table-column label="pbftView" prop="pbftView" :show-overflow-tooltip="true"
+                                     v-if="mobileType === 'pc'" align="center"></el-table-column>
                     <el-table-column label="节点状态" :show-overflow-tooltip="true" prop="active" align="center">
                         <template slot-scope="scope">
                             <span v-if="scope.row.status == 0" style="color: #0F0">正常</span>
@@ -37,67 +52,87 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <div class="home-foot">
-                <!--Block list-->
-                <div class="home-foot-box margin-right-10">
-                    <div class="home-foot-box-nav">
-                        <div class="left">
-                            <span class="line"></span>
-                            <span class="text">区块</span>
+            <el-row :gutter="10" >
+                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                    <!--Block list-->
+                    <div class="home-foot-box ">
+                        <div class="home-foot-box-nav">
+                            <div class="left">
+                                <span class="line"></span>
+                                <span class="text">区块</span>
+                            </div>
+                            <div class="right">
+                                <span @click="linkPage('block')" class="table-link" style="padding-right: 30px"> 更多 ></span>
+                            </div>
                         </div>
-                        <div class="right">
-                            <span @click="linkPage('block')" class="table-link" style="padding-right: 30px"> 更多 ></span>
-                        </div>
-                    </div>
-                    <div class="home-foot-box-content" v-loading="loading4" element-loading-text="数据加载中..." element-loading-background="rgba(0, 0, 0, 0.8)">
-                        <ul>
-                            <li class="item" v-for="item in blockList" :key='item.number'>
-                                <div class="left">
-                                    <div @click="linkPage('blockDetail','blockHash',item.blockHash)" class="table-link">区块 {{item.number}}</div>
-                                    <div>{{item.dateTimeStr}}</div>
-                                </div>
-                                <div class="right">
-                                    <div>出块节点&nbsp&nbsp&nbsp
-                                        <span class="block-number" :title="item.sealer">{{item.sealer}}</span>
+                        <div class="home-foot-box-content"  v-loading="loading4" element-loading-text="数据加载中..."
+                             element-loading-background="rgba(0, 0, 0, 0.8)">
+                            <ul>
+                                <li class="item" v-for="item in blockList" :key='item.number'>
+                                    <div class="left">
+                                        <div @click="linkPage('blockDetail','blockHash',item.blockHash)" class="table-link">
+                                            区块
+                                            {{ item.number }}
+                                        </div>
+                                        <div>{{ item.dateTimeStr }}</div>
                                     </div>
-                                    <div class="txn" @click="linkPage('transaction','blockHeight',item.number)">{{item.txn}} txns</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!--transaction list-->
-                <div class="home-foot-box margin-left-10">
-                    <div class="home-foot-box-nav">
-                        <div class="left">
-                            <span class="line"></span>
-                            <span class="text">交易</span>
-                        </div>
-                        <div class="right">
-                            <span @click="linkPage('transaction')" class="table-link" style="padding-right: 30px"> 更多 ></span>
-                        </div>
-                    </div>
-                    <div class="home-foot-box-content" v-loading="loading5" element-loading-text="数据加载中..." element-loading-background="rgba(0, 0, 0, 0.8)">
-                        <ul>
-                            <li class="item" v-for="itemlist in transactionList" :key='itemlist.blockTimesStr'>
-                                <div class="left">
-                                    <div class="transaction" @click="linkPage( 'transactionDetail','pkHash',itemlist.transHash)">交易 <span class="table-link" :title="itemlist.transHash | toUpperCase">{{itemlist.transHash | toUpperCase}}</span></div>
-                                    <div>
-                                        <div class="number" :title="itemlist.from">{{itemlist.from}}</div>
-                                        <img src="../../assets/images/s-right.png" class="image">
-                                        <div class="number" :title="itemlist.to">{{itemlist.to}}</div>
+                                    <div class="right">
+                                        <div>出块节点&nbsp&nbsp&nbsp
+                                            <span class="block-number" :title="item.sealer">{{ item.sealer }}</span>
+                                        </div>
+                                        <div class="txn" @click="linkPage('transaction','blockHeight',item.number)">
+                                            {{ item.txn }} txns
+                                        </div>
                                     </div>
-                                </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </el-col>
+                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                    <!--transaction list-->
+                    <div class="home-foot-box " >
+                        <div class="home-foot-box-nav">
+                            <div class="left">
+                                <span class="line"></span>
+                                <span class="text">交易</span>
+                            </div>
+                            <div class="right">
+                            <span @click="linkPage('transaction')" class="table-link"
+                                  style="padding-right: 30px"> 更多 ></span>
+                            </div>
+                        </div>
+                        <div class="home-foot-box-content" v-loading="loading5" element-loading-text="数据加载中..."
+                             element-loading-background="rgba(0, 0, 0, 0.8)">
+                            <ul>
+                                <li class="item" v-for="itemlist in transactionList" :key='itemlist.blockTimesStr'>
+                                    <div class="left">
+                                        <div class="transaction"
+                                             @click="linkPage( 'transactionDetail','pkHash',itemlist.transHash)">交易 <span
+                                            class="table-link"
+                                            :title="itemlist.transHash | toUpperCase">{{
+                                                itemlist.transHash | toUpperCase
+                                            }}</span></div>
+                                        <div>
+                                            <div class="number" :title="itemlist.from">{{ itemlist.from }}</div>
+                                            <img src="../../assets/images/s-right.png" class="image">
+                                            <div class="number" :title="itemlist.to">{{ itemlist.to }}</div>
+                                        </div>
+                                    </div>
 
-                                <div class="right">
-                                    <div>{{itemlist.blockTimesStr}}</div>
-                                    <div class="trans-funcName" :title='itemlist.funcName'>{{itemlist.funcName || ""}}</div>
-                                </div>
-                            </li>
-                        </ul>
+                                    <div class="right">
+                                        <div>{{ itemlist.blockTimesStr }}</div>
+                                        <div class="trans-funcName" :title='itemlist.funcName'>{{
+                                                itemlist.funcName || ""
+                                            }}
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </el-col>
+            </el-row>
         </div>
     </div>
 </template>
@@ -106,25 +141,30 @@
     width: 100%;
     background-color: #2a2c3b;
 }
+
 .home-head {
     font-size: 0;
 }
+
 .home-head-data {
     display: inline-block;
-    width: calc(41% - 10px);
+    width: 100%;
     box-sizing: border-box;
     padding: 30px;
     background-color: #3b3e54;
     vertical-align: middle;
 }
+
 .lg-width {
     width: 47%;
 }
+
 .home-head-data ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
+
 .home-head-data ul li {
     display: inline-block;
     height: 110px;
@@ -136,7 +176,6 @@
 }
 
 .home-head-chart {
-    width: calc(59% - 10px) !important;
     height: 310px;
     vertical-align: middle;
 }
@@ -150,6 +189,7 @@
     background-color: #3b3e54;
     color: #fff;
 }
+
 .el-range-separator {
     color: #fff !important;
 }
@@ -157,6 +197,7 @@
 .home-head-data-label {
     color: white;
 }
+
 .home-head-data-content {
     display: block;
     color: white;
@@ -167,9 +208,11 @@
 .home-center {
     margin-top: 20px;
 }
+
 .home-center-table {
     background-color: #3b3e54;
 }
+
 .home-center .el-table .table-style {
     background-color: #3b3e54;
     color: #fff;
@@ -182,35 +225,45 @@
     white-space: nowrap;
     border-color: #666;
 }
+
 .home-center .el-table .table-style:hover {
     color: #333;
 }
+
 .el-table {
     border-color: #666 !important;
 }
+
 .el-table__body-wrapper {
     border-color: #666 !important;
 }
+
 .el-table table {
     border-color: #666 !important;
 }
+
 .el-table tbody {
     border-color: #666 !important;
 }
+
 .el-table tr {
     border-color: #666 !important;
 }
+
 .el-table th {
     border-color: #666 !important;
 }
+
 .el-table td {
     border-color: #666 !important;
 }
+
 .el-table--border:after,
 .el-table--group:after,
 .el-table:before {
     background-color: #666 !important;
 }
+
 .home-center .el-table .name-wrapper {
     width: 100%;
     height: 100%;
@@ -220,23 +273,28 @@
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
 }
+
 .home-center .el-table .el-table__empty-block {
     background-color: #3b3e54;
 }
+
 .home-foot {
     margin-top: 20px;
     font-size: 0;
 }
+
 .home-foot-box {
     display: inline-block;
-    width: calc(50% - 10px);
+    width: 100%;
     padding-bottom: 20px;
     background-color: #3b3e54;
     font-size: 14px;
     color: #fff;
     vertical-align: top;
+    margin-top: 10px;
     box-sizing: border-box;
 }
+
 .home-foot-box-nav {
     width: 100%;
     height: 50px;
@@ -246,10 +304,12 @@
     overflow: hidden;
     box-sizing: border-box;
 }
+
 .home-foot-box-nav .left {
     float: left;
     width: 50%;
 }
+
 .home-foot-box-nav .left .line {
     display: inline-block;
     width: 3px;
@@ -258,6 +318,7 @@
     background-color: #2196f3;
     vertical-align: middle;
 }
+
 .home-foot-box-nav .right {
     float: right;
     width: 50%;
@@ -265,25 +326,30 @@
     cursor: pointer;
     box-sizing: border-box;
 }
+
 .home-foot-box-content ul {
     padding: 0;
     margin: 0;
     list-style: none;
 }
+
 .home-foot-box-content .item {
     border-bottom: 1px solid #999;
     overflow: hidden;
     line-height: 28px;
     padding: 12px 30px;
 }
+
 .home-foot-box-content .item .left {
     float: left;
 }
+
 .home-foot-box-content .item .right {
     float: right;
     text-align: right;
     overflow: hidden;
 }
+
 .home-foot-box-content .item .block-number {
     display: inline-block;
     width: 116px;
@@ -292,6 +358,7 @@
     white-space: nowrap !important;
     vertical-align: middle;
 }
+
 .home-foot-box-content .item .txn {
     float: right;
     width: 70px;
@@ -302,6 +369,7 @@
     text-align: center;
     cursor: pointer;
 }
+
 .home-foot-box-content .item .transaction {
     width: 320px;
     overflow: hidden;
@@ -309,6 +377,7 @@
     white-space: nowrap !important;
     vertical-align: middle;
 }
+
 .home-foot-box-content .number {
     display: inline-block;
     width: 148px;
@@ -317,6 +386,7 @@
     white-space: nowrap !important;
     vertical-align: middle;
 }
+
 .home-foot-box-content .image {
     vertical-align: middle;
 }
@@ -324,25 +394,29 @@
 table {
     border-color: #999 !important;
 }
+
 .node-false {
     color: #f00 !important;
 }
-.trans-funcName{
+
+.trans-funcName {
     max-width: 220px;
     overflow: hidden;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
     vertical-align: middle;
 }
+
 @media screen and (max-width: 1200px) {
     .home-head-data {
         display: inline-block;
-        width: calc(41% - 10px);
+        width: 100%;
         box-sizing: border-box;
         padding: 20px 20px;
         background-color: #3b3e54;
         vertical-align: middle;
     }
+
     .home-head-data-content {
         display: block;
         color: white;
@@ -350,17 +424,19 @@ table {
         font-size: 28px;
         text-align: right;
     }
+
     .home-head-chart {
-        width: calc(59% - 10px) !important;
         height: 290px;
         vertical-align: middle;
     }
+
     .home-foot-box-content .item {
         border-bottom: 1px solid #999;
         overflow: hidden;
         line-height: 28px;
         padding: 12px 20px;
     }
+
     .home-foot-box-content .item .transaction {
         width: 280px;
         overflow: hidden;
@@ -368,6 +444,7 @@ table {
         white-space: nowrap !important;
         vertical-align: middle;
     }
+
     .home-foot-box-content .number {
         display: inline-block;
         width: 130px;
@@ -376,6 +453,7 @@ table {
         white-space: nowrap !important;
         vertical-align: middle;
     }
+
     /* .trans-funcName{
         max-width: 200px;
         overflow: hidden;
@@ -384,20 +462,23 @@ table {
         vertical-align: middle;
     } */
 }
+
 @media screen and (max-width: 1000px) {
     .home-head-data {
         display: inline-block;
-        width: calc(41% - 10px);
+        width: 100%;
         box-sizing: border-box;
         padding: 10px 10px;
         background-color: #3b3e54;
         vertical-align: middle;
     }
+
     .home-head-chart {
-        width: calc(59% - 10px) !important;
         height: 270px;
+        margin-top: 10px;
         vertical-align: middle;
     }
+
     .home-head-data-content {
         display: block;
         color: white;
@@ -405,6 +486,7 @@ table {
         font-size: 24px;
         text-align: right;
     }
+
     .home-head-data ul li {
         display: inline-block;
         height: 110px;
@@ -414,12 +496,14 @@ table {
         color: #fff;
         box-sizing: border-box;
     }
+
     .home-foot-box-content .item {
         border-bottom: 1px solid #999;
         overflow: hidden;
         line-height: 28px;
         padding: 12px 20px;
     }
+
     .home-foot-box-content .item .transaction {
         width: 200px;
         overflow: hidden;
@@ -427,6 +511,7 @@ table {
         white-space: nowrap !important;
         vertical-align: middle;
     }
+
     .home-foot-box-content .number {
         display: inline-block;
         width: 85px;
@@ -435,6 +520,7 @@ table {
         white-space: nowrap !important;
         vertical-align: middle;
     }
+
     .home-foot-box-content .item .txn {
         float: right;
         width: 70px;
@@ -445,6 +531,9 @@ table {
         text-align: center;
         cursor: pointer;
     }
+    .home-foot-box-nav {
+        width: auto;
+    }
     /* .trans-funcName{
         max-width: 120px;
         overflow: hidden;
@@ -453,21 +542,32 @@ table {
         vertical-align: middle;
     } */
 }
+
+.el-row {
+    margin: 0 !important;
+}
 </style>
 <script type="text/babel">
-import { getTbBlcokChainInfo, getTxnByLastFourteenDay, getTbBlockInfo, getTbTransactionInfo, getTbNodeConnection, getAbiFunction, getTbTransactionByPkHash, getAbi } from '@/api/api'
-import { Message } from 'element-ui';
-import { message } from '@/util/util'
-import { timeState, MonthState, MonthNumber, intiDate } from '@/util/util'
-import { goPage } from '@/util/util'
-import { spliceData } from '@/util/util'
-import url from '@/api/url'
+import {
+    getTbBlcokChainInfo,
+    getTxnByLastFourteenDay,
+    getTbBlockInfo,
+    getTbTransactionInfo,
+    getTbNodeConnection,
+    getAbiFunction,
+    getTbTransactionByPkHash,
+    getAbi
+} from '@/api/api'
+import {Message} from 'element-ui';
+import {message} from '@/util/util'
+import {timeState, MonthState, MonthNumber, intiDate} from '@/util/util'
+import {goPage, IsPC} from '@/util/util'
 import charts from '@/components/chart'
-import router from '@/router'
 import constant from '@/util/constant'
 import errorcode from "@/util/errorCode"
 import '@/assets/css/layout.css'
 import '@/assets/css/public.css'
+
 let minMonthDate = null;
 let maxMonthDate = null;
 let dateTimeBegin = timeState((new Date()).getTime());
@@ -523,7 +623,8 @@ export default {
             tranList: [],
             codeList: [],
             newData: [],
-            oladata: ""
+            oladata: "",
+            mobileType: IsPC(),
         }
     },
     mounted: function () {
@@ -590,11 +691,21 @@ export default {
         },
         //create timer
         setSetInterval: function () {
-            this.setInterval.timer1 = window.setInterval(() => { this.searchTxnByLastFourteenDay() }, constant.INTERVALTIME);
-            this.setInterval.timer2 = window.setInterval(() => { this.searchTbBlcokChainInfo() }, constant.INTERVALTIME);
-            this.setInterval.timer3 = window.setInterval(() => { this.searchTbNodesInfo() }, constant.INTERVALTIME);
-            this.setInterval.timer4 = window.setInterval(() => { this.searchTbBlockInfo() }, constant.INTERVALTIME);
-            this.setInterval.timer5 = window.setInterval(() => { this.searchTbTransactionInfo() }, constant.INTERVALTIME);
+            this.setInterval.timer1 = window.setInterval(() => {
+                this.searchTxnByLastFourteenDay()
+            }, constant.INTERVALTIME);
+            this.setInterval.timer2 = window.setInterval(() => {
+                this.searchTbBlcokChainInfo()
+            }, constant.INTERVALTIME);
+            this.setInterval.timer3 = window.setInterval(() => {
+                this.searchTbNodesInfo()
+            }, constant.INTERVALTIME);
+            this.setInterval.timer4 = window.setInterval(() => {
+                this.searchTbBlockInfo()
+            }, constant.INTERVALTIME);
+            this.setInterval.timer5 = window.setInterval(() => {
+                this.searchTbTransactionInfo()
+            }, constant.INTERVALTIME);
         },
         //clear timer
         clear: function () {

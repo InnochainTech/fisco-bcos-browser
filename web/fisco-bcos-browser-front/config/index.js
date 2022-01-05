@@ -12,16 +12,16 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             '/api': {
-                target: 'http://127.0.0.1',
+              target: 'http://192.168.1.89:5100/',
                 changeOrigin: true,
-                pathRewrite: {
-                    '^/api': ''
-                }
+                // pathRewrite: {
+                //     '^/api': ''
+                // }
             }
         },
 
         // Various Dev Server settings
-        host: 'localhost', // can be overwritten by process.env.HOST
+        host: '0.0.0.0', // can be overwritten by process.env.HOST
         port: 3006, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
         autoOpenBrowser: false,
         errorOverlay: true,
@@ -45,7 +45,7 @@ module.exports = {
     },
 
     build: {
-        env: require('./prod.env'), 
+        env: require('./prod.env'),
 
         // Template for index.html
         index: path.resolve(__dirname, '../dist/index.html'),

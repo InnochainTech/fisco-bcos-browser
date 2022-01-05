@@ -7,7 +7,7 @@
                 <div class="hashInput">
                     <el-input placeholder="请输入交易哈希或块高" v-model="searchKeyValue" class="input-with-select">
                         <el-button slot="append" icon="el-icon-search" @click="search" :disabled="submitDisabled"></el-button>
-                    </el-input>   
+                    </el-input>
                 </div>
             </div>
             <div class="search-table">
@@ -39,7 +39,7 @@
                     </el-table-column>
                 </el-table>
                 <div class="search-pagation">
-                    <div style="line-height: 40px">
+                    <div class="search-page" >
                         <span>查询结果 : </span>
                         <span>共计{{pagination.total}}条数据</span>
                     </div>
@@ -57,6 +57,22 @@
         </div>
     </div>
 </template>
+<style scoped>
+.search-page {
+    line-height: 30px;
+    padding: 10px;
+}
+
+@media screen and (max-width: 1150px) {
+    ::v-deep .el-pager li {
+        min-width: 20px;
+    }
+
+    ::v-deep .btn-prev {
+        min-width: 20px;
+    }
+}
+</style>
 <script type="es6">
     import nav from '@/components/content-nav'
     import {getTbTransactionInfo} from '@/api/api'
@@ -191,7 +207,7 @@
                     blockNumber: this.blockHeight,
                     transHash: this.transactionData,
                 }
-                
+
                 getTbTransactionInfo(data,query).then(res => {
                     window.clearInterval(this.setIntervalTime);
                     this.setIntervalTime = window.setInterval(() => {this.searchTbTransactionInfo()}, constant.INTERVALTIME);

@@ -10,11 +10,11 @@
              <div class="search-table">
                  <el-table :data="grouplist" v-loading="loading"  element-loading-text="数据加载中..."
                           element-loading-background="rgba(0, 0, 0, 0.8)">
-                    <el-table-column type="index" label="序号" align="center" min-width='60px'></el-table-column>
+                    <el-table-column type="index" label="序号" align="center" min-width='50px'></el-table-column>
                     <el-table-column prop="groupId" label="群组id" align="center"></el-table-column>
                     <el-table-column prop="groupName" label="群组名称" align="center"></el-table-column>
                     <el-table-column prop="groupDesc" label="群组描述" align="center"></el-table-column>
-                    <el-table-column label="操作">
+                    <el-table-column label="操作" :width="mobileType === 'pc'?'auto':'50'">
                         <template slot-scope="scope">
                             <i class="el-icon-delete" style=" cursor:pointer" @click="deleteData(scope.row)"></i>
                         </template>
@@ -29,7 +29,7 @@
 import nav from '@/components/content-nav'
 import { getGroupList,deleteGroup } from "@/api/api"
 import addGroup from "@/components/addGroup"
-import {message} from '@/util/util'
+import {message,IsPC} from '@/util/util'
 import constant from '@/util/constant'
 import errorcode from "@/util/errorCode"
 import Bus from "@/bus"
@@ -46,6 +46,7 @@ export default {
             grouplist: [],
             addGroupShow: false,
             loading: false,
+            mobileType: IsPC(),
         }
     },
     mounted: function(){
@@ -54,7 +55,7 @@ export default {
                 this.GetgroupList();
             }else{
                 this.add();
-            }   
+            }
         })
     },
     methods: {
@@ -72,7 +73,7 @@ export default {
                         Bus.$emit('change',res.data.data)
                         if(val){
                             this.$emit('addGroup');
-                        }    
+                        }
                     }else{
                         this.addGroupShow = true;
                     }
