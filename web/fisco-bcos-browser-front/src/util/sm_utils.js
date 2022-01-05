@@ -1,17 +1,17 @@
 /**
  * Utils for SM2 and SM3 module
  */
-var utils = exports
-// var BN = require('bn.js');
-// var crypto = require('crypto');
+let utils = exports
+// let BN = require('bn.js');
+// let crypto = require('crypto');
 
 utils.strToBytes = strToBytes;
 // utils.hashToBN = hashToBN;
 // utils.random = random;
 
 function strToBytes(s) {
-  var ch, st, re = [];
-  for (var i = 0; i < s.length; i++ ) {
+  let ch, st, re = [];
+  for (let i = 0; i < s.length; i++ ) {
     ch = s.charCodeAt(i);  // get char
     st = [];                 // set up "stack"
     do {
@@ -30,9 +30,9 @@ function strToBytes(s) {
 //   if (typeof hash == 'string') {
 //     return new BN(hash, 16);
 //   } else {
-//     var hex = '';
-//     for (var i = 0; i < hash.length; i++) {
-//       var b = hash[i].toString(16);
+//     let hex = '';
+//     for (let i = 0; i < hash.length; i++) {
+//       let b = hash[i].toString(16);
 //       if (b.length == 1) {
 //         hex += '0';
 //       }

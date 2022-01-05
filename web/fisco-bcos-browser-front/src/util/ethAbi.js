@@ -1,6 +1,6 @@
 import utils from "./sm_sha"
 let web3Abi = require("web3-eth-abi");
-var _ = require('underscore');
+let _ = require('underscore');
 
 let ethAbi = web3Abi;
 console.log(utils)

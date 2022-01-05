@@ -36,7 +36,7 @@ const folderName = path.join('./static/js')
 * callback 回调函数
 */
 const downloadFile = async (uri, filename, callback) => {
-    var stream = fs.createWriteStream(path.resolve(folderName, filename), { flags: 'w' });
+    let stream = fs.createWriteStream(path.resolve(folderName, filename), { flags: 'w' });
     await request(uri).pipe(stream).on('close', callback);
 }
 
@@ -76,8 +76,8 @@ try {
         console.log("require-from-string not find")
         return
     }
-    let oldStr = 'var Module = require("module")'
-    let newStr = 'var Module = module.constructor'
+    let oldStr = 'let Module = require("module")'
+    let newStr = 'let Module = module.constructor'
     fileContent2 = fileContent2.replace(oldStr, newStr);
     fs.writeFileSync(requireFromString, fileContent2, 'utf8');
     console.log('require-from-string 依赖修改成功')

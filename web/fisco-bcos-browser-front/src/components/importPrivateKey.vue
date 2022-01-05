@@ -68,7 +68,7 @@ export default {
 
     computed: {
         rules() {
-            var checkData = (rule, value, callback) => {
+            let checkData = (rule, value, callback) => {
                 if (value) {
                     if (/[\u4E00-\u9FA5]/g.test(value)) {
                         callback(new Error('密码不能是汉字'));
@@ -131,14 +131,14 @@ export default {
         uploadFile(param) {
             this.$refs['keyForm'].validate(valid => {
                 if (valid) {
-                    var reader = new FileReader(), self = this;
+                    let reader = new FileReader(), self = this;
                     reader.readAsText(param.file, "UTF-8");
                     reader.onload = function (evt) {
-                        var fileContent = evt.target.result;
+                        let fileContent = evt.target.result;
                         switch (self.keyForm.fileType) {
                             case '.txt':
                                 try {
-                                    var fileString = JSON.parse(fileContent).privateKey;
+                                    let fileString = JSON.parse(fileContent).privateKey;
                                     self.textRivateKey(fileString)
 
                                 } catch (error) {
@@ -221,7 +221,7 @@ export default {
 
         },
         p12RivateKey(param) {
-            var form = new FormData()
+            let form = new FormData()
             form.append('userName', this.keyForm.fileName)
             form.append('p12File', param)
             form.append('p12Password', this.keyForm.password)

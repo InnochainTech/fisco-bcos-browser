@@ -210,7 +210,7 @@ export function reviseParam(necessary, query) {
         querys = arguments[1],
         arr = [],
         str = '';
-    for (var i in params) {
+    for (let i in params) {
         arr.push(params[i])
     }
     str = arr.join('/');

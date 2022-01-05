@@ -1096,8 +1096,8 @@ export default {
                     data: this.versionData.url
                 });
             } else {
-                var head = document.head;
-                var script = document.createElement("script");
+                let head = document.head;
+                let script = document.createElement("script");
                 script.src = `${this.baseURLWasm}/${this.version}.js`;
                 script.setAttribute('id', 'soljson');
                 if (!document.getElementById('soljson')) {
@@ -1118,7 +1118,7 @@ export default {
         onchangeLoadVersion(version) {
             this.loading = true
             localStorage.setItem('solcName', version)
-            var versionId = '';
+            let versionId = '';
             this.versionList.forEach(item => {
                 if (item.solcName == version) {
                     versionId = item.versionId

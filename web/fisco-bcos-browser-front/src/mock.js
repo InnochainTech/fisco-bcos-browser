@@ -1,4 +1,4 @@
-var Mock = require('mockjs');
+let Mock = require('mockjs');
 
 Mock.mock('/fisco-cc-browser-page/home/getTbBlockChainInfo.json',function (req,res) {
     return {

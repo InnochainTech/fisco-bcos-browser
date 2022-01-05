@@ -1,7 +1,7 @@
 import solc from 'solc/wrapper';
 let Base64 = require("js-base64").Base64;
-var compileJSON;
-var missingInputs = [];
+let compileJSON;
+let missingInputs = [];
 function findImports (path,list,contractPath) {
     let contractList = list;
     let arry = path.split("/");
@@ -80,7 +80,7 @@ function findImports (path,list,contractPath) {
     }
 };
 module.exports = function worker(self) {
-    
+
     self.addEventListener('message', (e) => {
     const data = e.data;
     console.log(data)
@@ -96,7 +96,7 @@ module.exports = function worker(self) {
             } catch (error) {
                 console.log(error)
             }
-           
+
             let compiler = solc(self.Module);
             compileJSON = (input,list,dataPath) => {
                 try {
@@ -117,7 +117,7 @@ module.exports = function worker(self) {
             missingInputs.length = 0
             if(data.input && compileJSON) {
             self.postMessage({
-                cmd: 'compiled', 
+                cmd: 'compiled',
                 data: compileJSON(data.input,data.list,data.path),
                 input: data.input,
                 missingInputs: missingInputs

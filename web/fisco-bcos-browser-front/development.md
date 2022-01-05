@@ -14,7 +14,7 @@ nodejs下载地址：https://nodejs.org/en/download/
 > 使用命令：
 
     npm install
-    
+
 下载依赖包
 
 > 执行update修改依赖和下载相关文件：
@@ -27,11 +27,11 @@ nodejs下载地址：https://nodejs.org/en/download/
 > 修改依赖：
 
    在node_modules中找到依赖包`require-from-string`，修改`index.js`文件第2行
-   
-   	var Module = require("module");
+
+   	let Module = require("module");
    改为
-   
-   	var Module = module.constructor;
+
+   	let Module = module.constructor;
 
 
 #### （2）启动项目

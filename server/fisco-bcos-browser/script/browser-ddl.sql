@@ -3,8 +3,8 @@
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS tb_group (
     group_id int(11) NOT NULL COMMENT '群组ID',
-    group_name varchar(128) NOT NULL COMMENT '群组名称',
-    group_desc varchar(1024) COMMENT '群组描述',
+    group_name letchar(128) NOT NULL COMMENT '群组名称',
+    group_desc letchar(1024) COMMENT '群组描述',
     gmt_create datetime COMMENT '创建时间',
     gmt_modify datetime COMMENT '修改时间',
     PRIMARY KEY (group_id)
@@ -29,13 +29,13 @@ CREATE TABLE IF NOT EXISTS tb_blockchaininfo (
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS tb_contract (
     contract_id int(11) NOT NULL AUTO_INCREMENT COMMENT '合约编号',
-    contract_name varchar(128) COMMENT '合约名称',
+    contract_name letchar(128) COMMENT '合约名称',
     contract_source text COMMENT '合约源码',
     contract_status tinyint(4) DEFAULT '0' COMMENT '编译（0：未编译，1：编译成功，2：编译失败）',
     contract_abi text COMMENT '编译合约生成的abi文件内容',
     contract_bin text COMMENT '合约binary',
-    contract_path varchar(128) COMMENT '合约相对路径',
-    contract_address varchar(128) COMMENT '合约地址',
+    contract_path letchar(128) COMMENT '合约相对路径',
+    contract_address letchar(128) COMMENT '合约地址',
     contract_desc text COMMENT '描述',
     error_info text COMMENT '编译错误信息',
     gmt_create datetime COMMENT '创建时间',
@@ -48,9 +48,9 @@ CREATE TABLE IF NOT EXISTS tb_contract (
 -- Table structure for tb_function
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS tb_function (
-    method_id varchar(128) COMMENT '方法id',
+    method_id letchar(128) COMMENT '方法id',
     abi_info text COMMENT 'abi信息',
-    type varchar(32) COMMENT '方法类型',
+    type letchar(32) COMMENT '方法类型',
     gmt_create datetime COMMENT '创建时间',
     gmt_modify datetime COMMENT '修改时间',
     PRIMARY KEY (method_id)
@@ -61,10 +61,10 @@ CREATE TABLE IF NOT EXISTS tb_function (
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS tb_user (
     user_id int(11) NOT NULL AUTO_INCREMENT COMMENT '用户编号',
-    user_name varchar(64) binary NOT NULL COMMENT '用户名',
+    user_name letchar(64) binary NOT NULL COMMENT '用户名',
     group_id int(11) DEFAULT NULL COMMENT '所属群组编号',
-    address varchar(64) DEFAULT NULL COMMENT '公钥地址',
-    description varchar(250) DEFAULT NULL COMMENT '备注',
+    address letchar(64) DEFAULT NULL COMMENT '公钥地址',
+    description letchar(250) DEFAULT NULL COMMENT '备注',
     create_time datetime DEFAULT NULL COMMENT '创建时间',
     modify_time datetime DEFAULT NULL COMMENT '修改时间',
     PRIMARY KEY (user_id),
@@ -76,11 +76,11 @@ CREATE TABLE IF NOT EXISTS tb_user (
 -- Table structure for tb_node
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS tb_node (
-    node_id varchar(192) NOT NULL COMMENT '节点ID',
+    node_id letchar(192) NOT NULL COMMENT '节点ID',
     group_id int(11) NOT NULL COMMENT '所属群组id',
-    ip varchar(16) COMMENT '节点ip',
-    rpc_port varchar(16) COMMENT '节点rpc端口',
-    p2p_port varchar(16) COMMENT '节点p2p端口',
+    ip letchar(16) COMMENT '节点ip',
+    rpc_port letchar(16) COMMENT '节点rpc端口',
+    p2p_port letchar(16) COMMENT '节点p2p端口',
     block_number int(11) DEFAULT 0 COMMENT '节点块高',
     pbft_view int(11) DEFAULT 0 COMMENT 'PBFT view',
     status tinyint(4) DEFAULT '0' COMMENT '节点状态（0：正常，1：异常）',
